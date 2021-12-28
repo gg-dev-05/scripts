@@ -1,0 +1,1 @@
+/home/ggdv05/.xinitrc
