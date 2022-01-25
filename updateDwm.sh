@@ -18,6 +18,22 @@ while true; do
 		battery_indicator=""
 	fi
 
-	xsetroot -name " $battery_indicator | $(date "+%d %a, %b | %I:%M:%S %p")"
+	discharging=$(cat /sys/class/power_supply/BAT0/status)
+	if [[ $discharging != "Discharging" ]]
+	then
+		battery_indicator+=" "
+	else
+		battery_indicator+=" "
+	fi
+	
+	if [[ $(hcitool con | grep ACL) ]]
+	then
+		bt="| "
+	else
+		bt=""
+	fi
+	
+
+	xsetroot -name "$bt | $battery_indicator | $(date "+%d %a, %b | %I:%M:%S %p")"
 	sleep 1s
 done &

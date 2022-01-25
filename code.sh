@@ -96,6 +96,26 @@ case $extension in
     fi
     ;;
 
+  "l")
+      echo "Lex File"
+      echo "compiling ${fileName}"
+
+      echo "flex -o ${fileName}.yy.c ${fileName}.l"
+      flex -o ${fileName}.yy.c ${fileName}.l
+
+      echo "gcc -o ${fileName} ${fileName}.yy.c"
+      gcc -o ${fileName} ${fileName}.yy.c
+
+      if [ ! -f ./${fileName} ]; then
+        echo "compilation failed!!"
+      else 
+        echo "==============="
+        echo "running ${file}"
+        echo "==============="
+        ./${fileName} ${@:3}
+      fi
+      ;;
+
   *)
     echo "unsupported file format"
     echo "Can compile only c and cpp files"
