@@ -4,9 +4,11 @@ usage="$(basename "$0") [-l linker] [-f filename] -- compile c, cpp files
 where:
     -h  display help
     -l  linker
+    -s  sudo
+    -d  not delete
     -f  file name"
     
-while getopts ":hf:l:" opt; do
+while getopts ":sdhf:l:" opt; do
   case $opt in
     h) 
       echo "$usage"
@@ -15,6 +17,8 @@ while getopts ":hf:l:" opt; do
     f)
       echo "Input File : $OPTARG"
       file=$OPTARG
+      ;;
+    s) use_sudo=1
       ;;
     l)  
       flags+=("$OPTARG")
@@ -74,7 +78,15 @@ case $extension in
     	echo "==============="
     	echo "running ${file}"
     	echo "==============="
-      ./${fileName} ${@:3}
+
+    if [ -n "$use_sudo" ] ; then
+      echo "sudo ./${fileName}"
+      sudo ./${fileName}
+    else
+      echo "./${fileName}"
+      ./${fileName}
+    fi
+
     fi
     ;;
 
