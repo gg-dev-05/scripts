@@ -127,10 +127,32 @@ case $extension in
         ./${fileName} ${@:3}
       fi
       ;;
+    
+  "y")
+      echo "Yacc File"
+      echo "compiling ${fileName}"
+
+      echo "bison -dy ${fileName}.y"
+      bison -dy ${fileName}.y
+      echo "flex ${fileName}.l"
+      flex ${fileName}.l
+      echo "cc lex.yy.c y.tab.c"
+      cc lex.yy.c y.tab.c
+
+      if [ ! -f ./a.out ]; then
+        echo "compilation failed!!"
+      else 
+        echo "==============="
+        echo "running ${file}"
+        echo "==============="
+        ./a.out;
+        rm a.out lex.yy.c y.tab.c y.tab.h
+      fi
+      ;;
 
   *)
     echo "unsupported file format"
-    echo "Can compile only c and cpp files"
+    echo "Can compile only c, cpp, l, y files"
     ;;
 esac
 
